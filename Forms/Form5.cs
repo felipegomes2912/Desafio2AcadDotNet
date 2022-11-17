@@ -9,11 +9,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesafioMiniERP.Classes;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using static System.Environment;
 
 namespace DesafioMiniERP
 {
     public partial class FormNotas : Form
     {
+        List<string> lista = new List<string>();
+        string arquivoNotas = Path.Join(Environment.GetFolderPath(SpecialFolder.Desktop), "notas.pdf");
         Thread thread;
         public FormNotas()
         {
@@ -57,6 +62,74 @@ namespace DesafioMiniERP
             else
             {
                 MessageBox.Show("Erro ao inserir a nota.", "Atenção!");
+            }
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewNotas.Rows.Count > 0)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "PDF (*.pdf)|*.pdf";
+                saveFileDialog.FileName = "Notas.pdf";
+                bool erro = false;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (File.Exists(saveFileDialog.FileName))
+                    {
+                        try
+                        {
+                            File.Delete(saveFileDialog.FileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            erro = true;
+                            MessageBox.Show("Erro ao exportar para PDF.\n" + ex.Message, "Atenção!");
+                        }
+                    }
+                    if (!erro)
+                    {
+                        try
+                        {
+                            PdfPTable pTable = new PdfPTable(dataGridViewNotas.Columns.Count);
+                            pTable.DefaultCell.Padding = 2;
+                            pTable.WidthPercentage= 100;
+                            pTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                            foreach (DataGridViewColumn coluna in dataGridViewNotas.Columns)
+                            {
+                                PdfPCell pCell = new PdfPCell(new Phrase(coluna.HeaderText));
+                                pTable.AddCell(pCell);
+                            }
+                            foreach (DataGridViewRow verLinha in dataGridViewNotas.Rows)
+                            {
+                                foreach (DataGridViewCell dCell in verLinha.Cells)
+                                {
+                                    pTable.AddCell(dCell.Value.ToString());
+                                }
+                            }
+
+                            using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                            {
+                                Document document = new Document(PageSize.A4, 8f, 16f, 16f, 8f);
+                                document.Open();
+                                document.Add(pTable);
+                                document.Close();
+                                fileStream.Close();
+                            }
+                            MessageBox.Show("Arquivo exportado com sucesso!", "Atenção!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao exportar arquivo.\n" + ex.Message, "Atenção!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Arquivo não encontrado", "Atenção!");
+                    }
+                }
             }
         }
     }

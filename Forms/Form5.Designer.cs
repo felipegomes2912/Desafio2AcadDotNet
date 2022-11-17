@@ -38,6 +38,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnExportar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNotas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             this.dataGridViewNotas.AllowUserToAddRows = false;
             this.dataGridViewNotas.AllowUserToDeleteRows = false;
             this.dataGridViewNotas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewNotas.Location = new System.Drawing.Point(12, 153);
+            this.dataGridViewNotas.Location = new System.Drawing.Point(12, 173);
             this.dataGridViewNotas.Name = "dataGridViewNotas";
             this.dataGridViewNotas.ReadOnly = true;
             this.dataGridViewNotas.RowTemplate.Height = 25;
@@ -131,11 +132,22 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Data da emissão";
             // 
+            // btnExportar
+            // 
+            this.btnExportar.Location = new System.Drawing.Point(12, 136);
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Size = new System.Drawing.Size(75, 23);
+            this.btnExportar.TabIndex = 20;
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.UseVisualStyleBackColor = true;
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
+            // 
             // FormNotas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 423);
+            this.ClientSize = new System.Drawing.Size(263, 439);
+            this.Controls.Add(this.btnExportar);
             this.Controls.Add(this.dataGridViewNotas);
             this.Controls.Add(this.btnConsultaNota);
             this.Controls.Add(this.btnMenu);
@@ -166,5 +178,6 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private Button btnExportar;
     }
 }
