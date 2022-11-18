@@ -113,6 +113,7 @@ namespace DesafioMiniERP
                             using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
                             {
                                 Document document = new Document(PageSize.A4, 8f, 16f, 16f, 8f);
+                                PdfWriter.GetInstance(document, fileStream);
                                 document.Open();
                                 document.Add(pTable);
                                 document.Close();
